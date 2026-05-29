@@ -1,11 +1,14 @@
 from core.brain import Brain
+from memory.database import initialize_database
 
 
 def main():
 
+    initialize_database()
+
     brain = Brain()
 
-    print("=== JARVIS v0.1 ===")
+    print("=== JARVIS v0.2 ===")
 
     while True:
 

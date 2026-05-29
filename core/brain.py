@@ -17,4 +17,4 @@ class Brain:
 
         intent = self.router.route(command)
 
-        return self.skills.execute(intent)
+        return self.skills.execute(intent, command)
