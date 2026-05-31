@@ -8,7 +8,7 @@ def main():
 
     brain = Brain()
 
-    print("=== JARVIS v0.2 ===")
+    print("=== JARVIS v0.4 ===")
 
     while True:
 

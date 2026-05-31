@@ -1,5 +1,6 @@
 from skills.time_skill import TimeSkill
 from skills.system_skill import SystemSkill
+from skills.app_skill import AppSkill
 from skills.memory_skill import remember, recall, forget
 
 
@@ -8,6 +9,7 @@ class SkillManager:
     def __init__(self):
         self.time_skill = TimeSkill()
         self.system_skill = SystemSkill()
+        self.app_skill = AppSkill()
 
     def execute(self, intent, command):
 
@@ -19,6 +21,7 @@ time
 cpu
 ram
 status
+open <app>
 remember <text>
 forget <id>
 recall
@@ -44,6 +47,12 @@ exit
             memory_id = int(memory_text)
 
             return forget(memory_id)
+
+        elif intent == "OPEN_APP":
+
+            app_name = command[len("open "):].strip().lower()
+
+            return self.app_skill.execute(app_name)
 
         elif intent == "RECALL":
 

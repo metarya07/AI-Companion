@@ -10,6 +10,9 @@ class IntentRouter:
         elif command_lower.startswith("forget "):
             return "FORGET"
 
+        elif command_lower.startswith("open "):
+            return "OPEN_APP"
+
         elif command_lower == "recall":
             return "RECALL"
 
