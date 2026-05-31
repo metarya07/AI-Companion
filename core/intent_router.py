@@ -13,6 +13,15 @@ class IntentRouter:
         elif command_lower == "recall":
             return "RECALL"
 
+        elif command_lower == "cpu":
+            return "CPU"
+
+        elif command_lower == "ram":
+            return "RAM"
+
+        elif command_lower == "status":
+            return "STATUS"
+
         elif command_lower == "time":
             return "TIME"
 

@@ -1,4 +1,5 @@
 from skills.time_skill import TimeSkill
+from skills.system_skill import SystemSkill
 from skills.memory_skill import remember, recall, forget
 
 
@@ -6,6 +7,7 @@ class SkillManager:
 
     def __init__(self):
         self.time_skill = TimeSkill()
+        self.system_skill = SystemSkill()
 
     def execute(self, intent, command):
 
@@ -14,6 +16,9 @@ class SkillManager:
 Available Commands:
 help
 time
+cpu
+ram
+status
 remember <text>
 forget <id>
 recall
@@ -43,6 +48,11 @@ exit
         elif intent == "RECALL":
 
             return recall()
+
+        response = self.system_skill.execute(intent)
+
+        if response:
+            return response
 
         response = self.time_skill.execute(intent)
 
