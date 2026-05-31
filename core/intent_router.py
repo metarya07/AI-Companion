@@ -7,6 +7,9 @@ class IntentRouter:
         if command_lower.startswith("remember "):
             return "REMEMBER"
 
+        elif command_lower.startswith("forget "):
+            return "FORGET"
+
         elif command_lower == "recall":
             return "RECALL"
 

@@ -1,4 +1,4 @@
-from memory.database import save_memory, get_memories
+from memory.database import save_memory, get_memories, delete_memory
 
 
 def remember(text):
@@ -18,3 +18,12 @@ def recall():
         result.append(f"{memory_id}. {memory_text}")
 
     return "\n".join(result)
+
+
+def forget(memory_id):
+    deleted_rows = delete_memory(memory_id)
+
+    if deleted_rows:
+        return f"Memory {memory_id} deleted."
+
+    return f"Memory {memory_id} not found."

@@ -47,6 +47,24 @@ def get_memories():
     return memories
 
 
+def delete_memory(memory_id):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM memories WHERE id = ?",
+        (memory_id,)
+    )
+
+    conn.commit()
+
+    deleted_rows = cursor.rowcount
+
+    conn.close()
+
+    return deleted_rows
+
+
 if __name__ == "__main__":
     initialize_database()
     print("Database initialized successfully.")

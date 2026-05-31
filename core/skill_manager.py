@@ -1,5 +1,5 @@
 from skills.time_skill import TimeSkill
-from skills.memory_skill import remember, recall
+from skills.memory_skill import remember, recall, forget
 
 
 class SkillManager:
@@ -15,6 +15,7 @@ Available Commands:
 help
 time
 remember <text>
+forget <id>
 recall
 exit
 '''
@@ -27,6 +28,17 @@ exit
             text = command[len("remember "):]
 
             return remember(text)
+
+        elif intent == "FORGET":
+
+            memory_text = command[len("forget "):].strip()
+
+            if not memory_text.isdigit():
+                return "Please provide a valid memory ID."
+
+            memory_id = int(memory_text)
+
+            return forget(memory_id)
 
         elif intent == "RECALL":
 
