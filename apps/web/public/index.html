@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JARVIS - Operating Companion & Control Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-zinc-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black custom-scrollbar overflow-x-hidden">
+
+  <!-- Top HUD Header -->
+  <header class="border-b border-cyan-950/80 bg-zinc-950/85 sticky top-0 z-50 backdrop-blur-xl">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Brand & Arc Reactor Core -->
+      <div class="flex items-center gap-3.5">
+        <div class="relative w-10 h-10 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full border border-cyan-400/40 arc-ring-1"></div>
+          <div class="absolute inset-1 rounded-full border border-dashed border-cyan-300/60 arc-ring-2"></div>
+          <div class="w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_12px_#00f2fe] arc-pulse"></div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-bold font-hud tracking-widest text-cyan-300 hud-glow-text">JARVIS</h1>
+            <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-cyan-950/80 text-cyan-400 border border-cyan-800/60">v0.9.5 OS</span>
+          </div>
+          <p class="text-xs text-zinc-400 tracking-wider">AI Operating Companion & Multi-Agent Orchestrator</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1 sm:pb-0" id="nav-tabs">
+        <button onclick="switchTab('console')" id="tab-btn-console" class="tab-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wider uppercase transition-all bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-2">
+          <i class="fa-solid fa-terminal text-cyan-400"></i> Console
+        </button>
+        <button onclick="switchTab('planner')" id="tab-btn-planner" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wider uppercase transition-all bg-zinc-900/80 text-zinc-400 hover:text-zinc-200 border border-zinc-800 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-indigo-400"></i> Planner
+        </button>
+        <button onclick="switchTab('memory')" id="tab-btn-memory" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wider uppercase transition-all bg-zinc-900/80 text-zinc-400 hover:text-zinc-200 border border-zinc-800 flex items-center gap-2">
+          <i class="fa-solid fa-brain text-purple-400"></i> Memory
+        </button>
+        <button onclick="switchTab('vision')" id="tab-btn-vision" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wider uppercase transition-all bg-zinc-900/80 text-zinc-400 hover:text-zinc-200 border border-zinc-800 flex items-center gap-2">
+          <i class="fa-solid fa-eye text-emerald-400"></i> Vision
+        </button>
+        <button onclick="switchTab('omniroute')" id="tab-btn-omniroute" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wider uppercase transition-all bg-zinc-900/80 text-zinc-400 hover:text-zinc-200 border border-zinc-800 flex items-center gap-2">
+          <i class="fa-solid fa-network-wired text-amber-400"></i> Models & Agents
+        </button>
+        <button onclick="switchTab('automation')" id="tab-btn-automation" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wider uppercase transition-all bg-zinc-900/80 text-zinc-400 hover:text-zinc-200 border border-zinc-800 flex items-center gap-2">
+          <i class="fa-solid fa-clock-rotate-left text-rose-400"></i> Automation
+        </button>
+      </nav>
+
+      <!-- Quick Control Pills -->
+      <div class="flex items-center gap-3">
+        <!-- Voice Synthesis Toggle -->
+        <button onclick="toggleVoiceSpeech()" id="voice-toggle-btn" class="px-3 py-1.5 rounded-lg text-xs font-medium border bg-zinc-900 border-zinc-700 text-zinc-300 hover:border-cyan-500/50 flex items-center gap-2 transition-all">
+          <i id="voice-icon" class="fa-solid fa-volume-high text-cyan-400"></i>
+          <span id="voice-label">Voice: ON</span>
+        </button>
+
+        <!-- OmniRoute Status Pill -->
+        <div id="header-omni-pill" class="flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium bg-zinc-900/90 border-zinc-700 text-zinc-300">
+          <span id="header-omni-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="header-omni-text">OmniRoute...</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Layout Grid -->
+  <main class="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+    <!-- Primary Center Viewport (8 Columns) -->
+    <section class="lg:col-span-8 flex flex-col gap-4">
+
+      <!-- TAB 1: CONSOLE VIEW (DEFAULT) -->
+      <div id="view-console" class="tab-view flex-1 flex flex-col gap-4">
+        
+        <!-- Interactive Chat Container -->
+        <div class="glass-panel rounded-2xl flex-1 flex flex-col min-h-[520px] max-h-[680px] p-4 relative overflow-hidden">
+          
+          <!-- Arc Reactor HUD Header inside console -->
+          <div class="border-b border-cyan-950/60 pb-3 mb-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+              <span class="text-xs uppercase font-hud tracking-widest text-cyan-300">Active Neural Channel</span>
+            </div>
+            <div class="text-[11px] font-mono text-zinc-400" id="active-provider-label">
+              Provider: Loading...
+            </div>
+          </div>
+
+          <!-- Messages Stream -->
+          <div id="chat-stream" class="flex-1 overflow-y-auto pr-2 space-y-4 custom-scrollbar">
+            <!-- Welcome message -->
+            <div class="flex items-start gap-3 msg-jarvis p-4 rounded-xl">
+              <div class="w-7 h-7 rounded-lg bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-xs shrink-0 font-hud">
+                J
+              </div>
+              <div class="flex-1 text-sm text-zinc-200 leading-relaxed">
+                <p class="font-semibold text-cyan-300 font-hud mb-1">JARVIS Online.</p>
+                <p class="text-zinc-300">All subsystems are operational. You can issue system commands, organize files, manage tasks, control apps, or converse with AI via text and voice.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Suggestion Chips -->
+          <div class="py-2 flex items-center gap-2 overflow-x-auto custom-scrollbar text-xs">
+            <button onclick="sendQuickCommand('status')" class="px-2.5 py-1 rounded bg-zinc-900/90 hover:bg-cyan-950 hover:border-cyan-500/40 border border-zinc-800 text-zinc-300 transition-all font-mono whitespace-nowrap">⚡ status</button>
+            <button onclick="sendQuickCommand('omniroute status')" class="px-2.5 py-1 rounded bg-zinc-900/90 hover:bg-cyan-950 hover:border-cyan-500/40 border border-zinc-800 text-zinc-300 transition-all font-mono whitespace-nowrap">🌐 omniroute status</button>
+            <button onclick="sendQuickCommand('tasks')" class="px-2.5 py-1 rounded bg-zinc-900/90 hover:bg-cyan-950 hover:border-cyan-500/40 border border-zinc-800 text-zinc-300 transition-all font-mono whitespace-nowrap">📋 tasks</button>
+            <button onclick="sendQuickCommand('recall')" class="px-2.5 py-1 rounded bg-zinc-900/90 hover:bg-cyan-950 hover:border-cyan-500/40 border border-zinc-800 text-zinc-300 transition-all font-mono whitespace-nowrap">🧠 recall</button>
+            <button onclick="sendQuickCommand('time')" class="px-2.5 py-1 rounded bg-zinc-900/90 hover:bg-cyan-950 hover:border-cyan-500/40 border border-zinc-800 text-zinc-300 transition-all font-mono whitespace-nowrap">🕒 time</button>
+            <button onclick="sendQuickCommand('processes')" class="px-2.5 py-1 rounded bg-zinc-900/90 hover:bg-cyan-950 hover:border-cyan-500/40 border border-zinc-800 text-zinc-300 transition-all font-mono whitespace-nowrap">💻 processes</button>
+          </div>
+
+          <!-- Input Bar with Mic & Send -->
+          <form id="chat-form" onsubmit="handleChatSubmit(event)" class="mt-2 flex items-center gap-2 bg-zinc-900/90 border border-cyan-900/50 rounded-xl p-1.5 focus-within:border-cyan-400 transition-all">
+            <!-- Voice Input Button -->
+            <button type="button" id="btn-mic" onclick="toggleSpeechRecognition()" title="Toggle Voice Recognition" class="w-10 h-10 rounded-lg bg-zinc-800 hover:bg-cyan-600 text-zinc-300 hover:text-white flex items-center justify-center transition-all">
+              <i id="mic-icon" class="fa-solid fa-microphone text-sm"></i>
+            </button>
+
+            <!-- Command Text Input -->
+            <input type="text" id="chat-input" placeholder="Speak or type a command (e.g. 'remember meeting at 3pm', 'status', 'ask what is quantum computing')..." class="flex-1 bg-transparent px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none font-sans" autocomplete="off">
+
+            <!-- Send Button -->
+            <button type="submit" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-black font-semibold text-sm rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-cyan-500/20 font-hud">
+              <span>Send</span>
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+          </form>
+
+        </div>
+      </div>
+
+      <!-- TAB 2: PLANNER VIEW -->
+      <div id="view-planner" class="tab-view hidden flex-1 flex flex-col gap-4">
+        <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold font-hud tracking-wide text-cyan-300 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-indigo-400"></i> Task Matrix & Planner Agent
+            </h2>
+            <button onclick="loadTasks()" class="text-xs text-zinc-400 hover:text-cyan-300 transition-colors flex items-center gap-1">
+              <i class="fa-solid fa-rotate"></i> Refresh
+            </button>
+          </div>
+
+          <!-- Add Task Form -->
+          <form onsubmit="handleAddTask(event)" class="flex gap-2">
+            <input type="text" id="task-input-text" placeholder="New task description (e.g. 'Submit AI project report')..." class="flex-1 bg-zinc-900/90 border border-zinc-700/80 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-cyan-500">
+            <input type="text" id="task-input-due" placeholder="Due date (optional, e.g. 'friday', '2026-09-01')" class="w-64 bg-zinc-900/90 border border-zinc-700/80 rounded-xl px-4 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-cyan-500 font-mono">
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all font-hud">
+              + Add Task
+            </button>
+          </form>
+
+          <!-- Task List Container -->
+          <div id="tasks-container" class="space-y-2 max-h-[520px] overflow-y-auto custom-scrollbar">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: MEMORY VIEW -->
+      <div id="view-memory" class="tab-view hidden flex-1 flex flex-col gap-4">
+        <div class="glass-panel rounded-2xl p-5 flex flex-col gap-5">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold font-hud tracking-wide text-cyan-300 flex items-center gap-2">
+              <i class="fa-solid fa-brain text-purple-400"></i> Long-Term Memory & Preferences Vault
+            </h2>
+            <button onclick="loadNotes(); loadPrefs();" class="text-xs text-zinc-400 hover:text-cyan-300 transition-colors flex items-center gap-1">
+              <i class="fa-solid fa-rotate"></i> Refresh
+            </button>
+          </div>
+
+          <!-- Notes Search & Add -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Notes Sub-panel -->
+            <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl p-4 flex flex-col gap-3">
+              <h3 class="text-sm font-semibold text-zinc-300 font-hud">Saved Memories & Notes</h3>
+              <div class="flex gap-2">
+                <input type="text" id="note-search-input" oninput="searchNotes()" placeholder="Search notes..." class="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-purple-500">
+                <input type="text" id="note-add-input" placeholder="Add note..." class="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-purple-500">
+                <button onclick="handleAddNote()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs px-3 py-1.5 rounded-lg font-semibold font-hud">+ Save</button>
+              </div>
+              <div id="notes-container" class="space-y-2 max-h-[320px] overflow-y-auto custom-scrollbar mt-1">
+                <!-- Loaded dynamically -->
+              </div>
+            </div>
+
+            <!-- Preferences Sub-panel -->
+            <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl p-4 flex flex-col gap-3">
+              <h3 class="text-sm font-semibold text-zinc-300 font-hud">User Preferences</h3>
+              <div class="flex gap-2">
+                <input type="text" id="pref-key-input" placeholder="Key (e.g. name)" class="w-1/3 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-purple-500">
+                <input type="text" id="pref-val-input" placeholder="Value (e.g. Tony)" class="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-purple-500">
+                <button onclick="handleSetPref()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs px-3 py-1.5 rounded-lg font-semibold font-hud">Set</button>
+              </div>
+              <div id="prefs-container" class="space-y-2 max-h-[320px] overflow-y-auto custom-scrollbar mt-1">
+                <!-- Loaded dynamically -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 4: VISION VIEW -->
+      <div id="view-vision" class="tab-view hidden flex-1 flex flex-col gap-4">
+        <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold font-hud tracking-wide text-cyan-300 flex items-center gap-2">
+              <i class="fa-solid fa-eye text-emerald-400"></i> Vision Agent & OCR Screen Scanner
+            </h2>
+            <button onclick="triggerScreenCapture()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-2 font-hud">
+              <i class="fa-solid fa-camera"></i> Capture & Scan Screen
+            </button>
+          </div>
+
+          <div class="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4 flex flex-col gap-2 min-h-[320px]">
+            <span class="text-xs uppercase tracking-wider text-zinc-400 font-mono">OCR Text Extraction Output:</span>
+            <pre id="vision-output" class="font-mono text-xs text-zinc-300 whitespace-pre-wrap bg-zinc-950 p-4 rounded-lg flex-1 overflow-y-auto max-h-[420px] custom-scrollbar border border-zinc-800/80">Click "Capture & Scan Screen" to read the text currently visible on your display.</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: OMNIROUTE & AGENTS VIEW -->
+      <div id="view-omniroute" class="tab-view hidden flex-1 flex flex-col gap-4">
+        <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-base font-bold font-hud tracking-wide text-cyan-300 flex items-center gap-2">
+                <i class="fa-solid fa-network-wired text-amber-400"></i> OmniRoute 373+ Multi-Model Gateway & Coding Agent
+              </h2>
+              <p class="text-xs text-zinc-400">Launch autonomous Claude Code sessions or route requests through custom profiles.</p>
+            </div>
+            <button onclick="loadOmniProfiles()" class="text-xs text-zinc-400 hover:text-cyan-300 transition-colors flex items-center gap-1">
+              <i class="fa-solid fa-rotate"></i> Refresh
+            </button>
+          </div>
+
+          <!-- Profiles Search -->
+          <div class="flex items-center gap-3">
+            <input type="text" id="omni-search" oninput="filterOmniProfiles()" placeholder="Search profiles (e.g. free, opus, kiro, nvidia, gemma)..." class="flex-1 bg-zinc-900/90 border border-zinc-700/80 rounded-xl px-4 py-2 text-sm text-zinc-200 focus:outline-none focus:border-amber-500">
+            <button onclick="launchClaudeProfile('auto-best-free')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-black font-bold text-xs px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 font-hud shadow-lg shadow-amber-500/20">
+              <i class="fa-solid fa-bolt"></i> 1-Click Launch (Free Best)
+            </button>
+          </div>
+
+          <!-- Profiles Grid -->
+          <div id="omni-profiles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[480px] overflow-y-auto custom-scrollbar pr-1">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: AUTOMATION VIEW -->
+      <div id="view-automation" class="tab-view hidden flex-1 flex flex-col gap-4">
+        <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-base font-bold font-hud tracking-wide text-cyan-300 flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left text-rose-400"></i> Automation Agent & Scheduled Jobs
+              </h2>
+              <p class="text-xs text-zinc-400">Recurring commands that run on your defined schedule.</p>
+            </div>
+            <button onclick="triggerRunDueSchedules()" class="bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-2 font-hud">
+              <i class="fa-solid fa-play"></i> Run Due Jobs Now
+            </button>
+          </div>
+
+          <div id="schedules-container" class="space-y-2 max-h-[480px] overflow-y-auto custom-scrollbar">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Right Telemetry & Status HUD (4 Columns) -->
+    <aside class="lg:col-span-4 flex flex-col gap-4">
+
+      <!-- Live Telemetry Gauges Card -->
+      <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
+        <div class="flex items-center justify-between border-b border-cyan-950/60 pb-3">
+          <h2 class="text-xs uppercase font-bold font-hud tracking-widest text-cyan-300 flex items-center gap-2">
+            <i class="fa-solid fa-gauge-high text-cyan-400"></i> System Telemetry
+          </h2>
+          <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+        </div>
+
+        <!-- Telemetry Gauges Grid -->
+        <div class="grid grid-cols-2 gap-3">
+          
+          <!-- CPU Gauge -->
+          <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-3.5 flex flex-col items-center justify-center relative overflow-hidden">
+            <span class="text-[11px] font-mono text-zinc-400 uppercase">CPU Load</span>
+            <span id="stat-cpu" class="text-2xl font-bold font-hud text-cyan-300 my-1">--%</span>
+            <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden mt-1">
+              <div id="bar-cpu" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-500"></div>
+            </div>
+          </div>
+
+          <!-- RAM Gauge -->
+          <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-3.5 flex flex-col items-center justify-center relative overflow-hidden">
+            <span class="text-[11px] font-mono text-zinc-400 uppercase">RAM Usage</span>
+            <span id="stat-ram" class="text-2xl font-bold font-hud text-purple-300 my-1">--%</span>
+            <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden mt-1">
+              <div id="bar-ram" class="bg-gradient-to-r from-purple-500 to-indigo-500 h-full w-0 transition-all duration-500"></div>
+            </div>
+          </div>
+
+          <!-- Disk Gauge -->
+          <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-3.5 flex flex-col items-center justify-center relative overflow-hidden">
+            <span class="text-[11px] font-mono text-zinc-400 uppercase">Disk Usage</span>
+            <span id="stat-disk" class="text-2xl font-bold font-hud text-emerald-300 my-1">--%</span>
+            <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden mt-1">
+              <div id="bar-disk" class="bg-gradient-to-r from-emerald-500 to-teal-500 h-full w-0 transition-all duration-500"></div>
+            </div>
+          </div>
+
+          <!-- Uptime -->
+          <div class="bg-zinc-900/70 border border-zinc-800 rounded-xl p-3.5 flex flex-col items-center justify-center relative overflow-hidden">
+            <span class="text-[11px] font-mono text-zinc-400 uppercase">Uptime</span>
+            <span id="stat-uptime" class="text-lg font-bold font-hud text-amber-300 my-1">--</span>
+            <span id="stat-battery" class="text-[10px] font-mono text-zinc-400 mt-1">Battery: --</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Multi-Agent Status Matrix Card -->
+      <div class="glass-panel rounded-2xl p-5 flex flex-col gap-3">
+        <div class="flex items-center justify-between border-b border-cyan-950/60 pb-3">
+          <h2 class="text-xs uppercase font-bold font-hud tracking-widest text-cyan-300 flex items-center gap-2">
+            <i class="fa-solid fa-microchip text-cyan-400"></i> Active Agent Matrix
+          </h2>
+          <span class="text-[10px] font-mono text-zinc-400">8 Modules</span>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/60 border border-zinc-800/80">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-microphone text-cyan-400 text-[11px]"></i> Voice Agent</span>
+            <span class="text-emerald-400 font-mono text-[10px]">READY</span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/60 border border-zinc-800/80">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-brain text-purple-400 text-[11px]"></i> Memory Agent</span>
+            <span class="text-emerald-400 font-mono text-[10px]">ACTIVE</span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/60 border border-zinc-800/80">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-list-check text-indigo-400 text-[11px]"></i> Planning Agent</span>
+            <span class="text-emerald-400 font-mono text-[10px]">ACTIVE</span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/60 border border-zinc-800/80">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-terminal text-amber-400 text-[11px]"></i> Coding Agent</span>
+            <span class="text-emerald-400 font-mono text-[10px]">READY</span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/60 border border-zinc-800/80">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-eye text-emerald-400 text-[11px]"></i> Vision Agent</span>
+            <span class="text-emerald-400 font-mono text-[10px]">READY</span>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-zinc-900/60 border border-zinc-800/80">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-clock text-rose-400 text-[11px]"></i> Automation Agent</span>
+            <span class="text-emerald-400 font-mono text-[10px]">ACTIVE</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 transform translate-y-24 opacity-0 transition-all duration-300 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl text-sm font-medium border bg-zinc-900 border-zinc-700 text-white">
+    <i id="toast-icon" class="fa-solid fa-circle-check text-cyan-400"></i>
+    <span id="toast-message">Notification</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

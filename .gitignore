@@ -1,7 +1,37 @@
+# Python
 __pycache__/
 *.pyc
+*.pyo
+
+# Virtual environments
 venv/
+.venv/
+
+# Environment / secrets
 .env
+
+# Editors
 .vscode/
 .idea/
+
+# Test / tooling caches
+.pytest_cache/
+
+# JARVIS runtime data
 jarvis.db
+jarvis-screenshot-*.png
+
+# Agent / Tool worktrees
+.claude/
+
+# Distribution / Build
+.dist/
+dist/
+build/
+*.egg-info/
+
+# Node / JS
+node_modules/
+
+# Logs
+*.log

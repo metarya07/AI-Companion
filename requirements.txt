@@ -1,0 +1,7 @@
+# JARVIS — core dependencies
+psutil>=5.9
+customtkinter>=5.2.0
+
+# Optional features (voice, vision) need no extra packages
+# to run JARVIS; install them only if you want those features. See
+# requirements-optional.txt.

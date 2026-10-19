@@ -1,0 +1,25 @@
+# JARVIS — optional dependencies
+#
+# None of these are needed to run JARVIS. Each feature imports its
+# packages lazily and prints setup instructions if they're missing, so
+# install only what you want.
+
+# --- Voice (v0.6): python main.py --voice ---
+SpeechRecognition>=3.10
+pyttsx3>=2.90
+# PyAudio provides the microphone backend. On Linux you may need the
+# system package "portaudio19-dev" before pip can build it.
+PyAudio>=0.2.13
+
+# --- Vision / OCR (v0.8): the `screen` and `screenshot` commands ---
+mss>=9.0
+Pillow>=10.0
+pytesseract>=0.3.10   # also install the Tesseract engine for your OS
+
+# --- AI (v0.7) ---
+# No package is required: the AI skill talks HTTP with the standard
+# library. Use a local model with Ollama (https://ollama.com), or set
+# OPENAI_API_KEY for an OpenAI-compatible endpoint.
+
+# --- Development ---
+pytest>=7.0

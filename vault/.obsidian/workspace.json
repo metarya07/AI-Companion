@@ -1,0 +1,239 @@
+{
+  "main": {
+    "id": "4abdf72248962f35",
+    "type": "split",
+    "children": [
+      {
+        "id": "ae6c75cfecadcaf1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fedca7d7fa80627d",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "c7d18055ae2b6f2e",
+    "type": "split",
+    "children": [
+      {
+        "id": "1ba7ecc266c10e28",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1f189f3e43189746",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "6cef06ac953d0049",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "ed97117efcba05c2",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "0ecbc30a68d0263a",
+    "type": "split",
+    "children": [
+      {
+        "id": "0740785ce47d6084",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2b568facf38150a2",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "ff8427ec5635aac7",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "a558d3afd2108483",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "127a3b20bb70bcd9",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "51104eab4a003cfe",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          },
+          {
+            "id": "98fa0ce96fa7974b",
+            "type": "leaf",
+            "state": {
+              "type": "footnotes",
+              "state": {},
+              "icon": "lucide-file-signature",
+              "title": "Footnotes"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "audio-recorder:Start/stop recording": false,
+      "markdown-importer:Open format converter": false,
+      "publish:Publish changes...": false,
+      "random-note:Open random note": false,
+      "zk-prefixer:Create new unique note": false,
+      "workspaces:Manage workspace layouts": false
+    }
+  },
+  "active": "fedca7d7fa80627d",
+  "lastOpenFiles": [
+    "AI-Conversations/AI Insight 2026-08-28 1252.md",
+    "Drive-C/User - Documents.md",
+    "Drive-A/Project - kafka.md",
+    "Drive-C/User - Qwiz.md",
+    "Drive-A/Drive-A Knowledge Hub.md",
+    "Ideas/JARVIS Neural Knowledge Vault.md",
+    "202608281243.md",
+    "202608281244.md",
+    "Untitled 5.base",
+    "Untitled 4.base",
+    "Untitled.base",
+    "Untitled.canvas",
+    "Untitled 3.base",
+    "Untitled 2.base",
+    "Untitled 1.base",
+    "Drive-A/Workspace - ALL A.md",
+    "Tasks/Untitled.base",
+    "Ideas/New Note 121936.md",
+    "AI Operating Principles.md",
+    "Drive-A/Project - metarya07.md",
+    "Drive-A/Project - live-stock-bot.md",
+    "Drive-A/Project - leetcode-instant-sync-extension.md",
+    "Drive-A/Project - AI-Companion.md",
+    "Ideas/PC Master Knowledge Graph.md",
+    "Drive-C/Drive-C Knowledge Hub.md",
+    "Drive-C/Tool - vscode.md",
+    "Drive-C/Tool - gemini.md",
+    "Drive-C/Tool - ollama.md",
+    "Drive-C/Tool - omniroute.md",
+    "Drive-C/Tool - claude.md",
+    "Drive-C/User - Cisco Packet Tracer 9.0.0.md",
+    "Drive-C/User - Downloads.md",
+    "Drive-C/User - secure-file-management-system.md",
+    "Drive-C/User - AndroidStudioProjects.md",
+    "Drive-C",
+    "Drive-A"
+  ]
+}
